@@ -4,28 +4,117 @@
 <head>
   <meta charset="utf-8">
   <title>Tarjeta de crédito válida</title>
+<link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-  <input id="cardnumber"></input>
+
+  <h1>Ingrese el número de su tarjeta</h1>
+  <input type=number id="cardnumber" placeholder="Ingrese número tarjeta" maxlength="16"></input>
+  <br>
   <button onclick="validate()">Validar</button>
   <div id="result"></div>
+
   <script lang="javascript">
+    //FUNCION DEL FORM
+    // function formularioFuncion(){
+    //   let nombreForm = document.forms["formulario"] ["cardnumber"].value;
+    //   if (nombreForm == "" || nombreForm == null){
+    //     alert("ingrese un número válido");
+    //     return false;
+    //   }
+    // }
+
     function validate() {
-      const valid = isValid(document.getElementById("cardnumber").value)
+      const textoIngresado = document.getElementById("cardnumber").value
+      if (textoIngresado.length === 0) {
+         alert("Debe ingresar el número de su tarjeta");
+         return ;
+
+      }
+
+
+      const valid = isValid(textoIngresado);
+      
       if (valid) {
+
+        document.getElementById('result').innerHTML = "tarjeta válida";
         // Show success in div#result
       }
       else {
+        document.getElementById('result').innerHTML = "tarjeta inválida";
+        //inner.html aparece en la misma página
         // Show error message in div#result
+        console.log(result)
       }
     }
+    function isValid(creditCardNumber) {
+     
 
-    function isValid(creditCardNumber){
-      // is creditCardNumber valid?
-      return false
+      let darloVuelta = creditCardNumber.split("").reverse()
+
+      //.length sobre la cantidad de elementos en el array, si no hay ninguno manda el alert 
+      //  if (darloVuelta.length === 0) {
+      //    alert("Debe ingresar el número de su tarjeta");
+      //    return ;
+
+      // }
+
+      //EN ESTA VARIABLE GUARDAREMOS LOS NUMEROS
+      var almacenaNumeros = []
+      for (var i = 0; i < darloVuelta.length; i++) {
+        //console.log(almacenaNumeros)
+        if ((i + 1) % 2 == 0) {
+          // EJEMPLO CON EL NUMERO 7
+          let numeroMultiplicado = darloVuelta[i] * 2; // 14
+          //console.log(numeroMultiplicado)
+          // Si son mayores que 10 entonces hay que partirlos
+          if (numeroMultiplicado >= 10) {
+            // console.log("aqui")
+            let numeroSeparado = numeroMultiplicado.toString().split(""); // ['1', '4']
+            let primerNumero = parseInt(numeroSeparado[0]); // 1
+            let segundoNumero = parseInt(numeroSeparado[1]); // 4
+            let resultadoSuma = primerNumero + segundoNumero;
+            //console.log(resultadoSuma) // 5
+            almacenaNumeros.push(resultadoSuma); // [9, 5]
+
+
+
+          } else {
+            // Si no, se guardan normalmente
+            almacenaNumeros.push(numeroMultiplicado);
+          }
+        } else {
+          // Si es impar, entonces lo guardo
+          almacenaNumeros.push(parseInt(darloVuelta[i]))
+        }
+
+      }
+      //suma de todos los números ingresados al input
+      let sumaTotal = almacenaNumeros.reduce((anterior, actual) => {
+        return anterior + actual;
+      })
+      //división % 10 de la suma total
+      resultado = (sumaTotal % 10 == 0)
+
+      console.log(darloVuelta)
+      console.log(almacenaNumeros)
+      console.log(sumaTotal)
+      console.log(resultado)
+      return resultado;
     }
+      
+
+
+
+
+
+
+
+      //PARTE DEL CÓDIGO ORIGINAL---return false
+   // }
   </script>
+<footer>2023</footer>
 </body>
 
 </html>
